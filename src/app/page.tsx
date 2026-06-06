@@ -1,4 +1,7 @@
+"use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const categories = [
   { href: "/indoor", emoji: "🪴", title: "Indoor Plants", desc: "Perfect for homes and offices" },
@@ -12,6 +15,14 @@ const categories = [
 const hints = ["Monstera", "Lavender", "Snake Plant", "Rosemary", "Fiddle Leaf Fig"];
 
 export default function HomePage() {
+  const router = useRouter();
+  const [query, setQuery] = useState("");
+
+  function search(q: string) {
+    const term = q.trim();
+    if (term) router.push(`/plants?q=${encodeURIComponent(term)}`);
+  }
+
   return (
     <div>
       <section className="bg-gradient-to-br from-green-600 to-green-800 text-white py-16 px-4">
@@ -20,15 +31,21 @@ export default function HomePage() {
             Discover the World of Plants
           </h1>
           <p className="text-green-100 text-lg mb-8">
-            Search thousands of plants, get care tips, and find what grows best in your region.
+            Search our directory of indoor and outdoor plants for care tips and growing info.
           </p>
           <div className="relative max-w-xl mx-auto mb-4">
             <input
               type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && search(query)}
               placeholder="Search for any plant..."
               className="w-full py-3 pl-5 pr-14 rounded-full text-gray-800 text-base shadow-lg focus:outline-none focus:ring-2 focus:ring-green-300"
             />
-            <button className="absolute right-3 top-1/2 -translate-y-1/2 bg-green-600 hover:bg-green-700 text-white rounded-full w-9 h-9 flex items-center justify-center transition-colors">
+            <button
+              onClick={() => search(query)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 bg-green-600 hover:bg-green-700 text-white rounded-full w-9 h-9 flex items-center justify-center transition-colors"
+            >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -38,6 +55,7 @@ export default function HomePage() {
             {hints.map((hint) => (
               <button
                 key={hint}
+                onClick={() => search(hint)}
                 className="text-sm bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full transition-colors"
               >
                 {hint}
@@ -46,6 +64,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
       <section className="max-w-7xl mx-auto px-4 py-12">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Browse by Category</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -12,7 +12,7 @@ const categoryLinks = [
 
 const otherLinks = [
   { href: "/region", label: "By Region" },
-  { href: "/ask", label: "Ask AI" },
+  { href: "/plants", label: "All Plants" },
   { href: "/guides", label: "Guides" },
   { href: "/shop", label: "Shop" },
 ];
