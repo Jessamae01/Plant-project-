@@ -61,13 +61,16 @@ export default function IndoorPage() {
       {filtered.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((plant) => (
-            <div
-              key={plant.name}
-              className="border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow"
+            <Link
+              key={plant.slug}
+              href={`/plants/${plant.slug}`}
+              className="group border border-gray-200 rounded-xl p-5 hover:border-green-400 hover:shadow-md transition-all block"
             >
               <div className="text-4xl mb-3">{plant.emoji}</div>
-              <h3 className="font-semibold text-gray-800 text-lg">{plant.name}</h3>
-              <p className="text-sm text-gray-500 mt-1 mb-3">{plant.description}</p>
+              <h3 className="font-semibold text-gray-800 text-lg group-hover:text-green-600 transition-colors">
+                {plant.name}
+              </h3>
+              <p className="text-sm text-gray-500 mt-1 mb-3 line-clamp-2">{plant.description}</p>
               <div className="space-y-1 text-sm text-gray-500">
                 <p>💡 {plant.light}</p>
                 <p>💧 {plant.water}</p>
@@ -78,7 +81,10 @@ export default function IndoorPage() {
                   </span>
                 </p>
               </div>
-            </div>
+              <p className="text-xs text-green-600 mt-3 font-medium group-hover:underline">
+                View care guide →
+              </p>
+            </Link>
           ))}
         </div>
       ) : (

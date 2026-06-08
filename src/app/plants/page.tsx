@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { plants, type Plant } from "@/lib/plants";
 
 type Category = "all" | "indoor" | "outdoor";
@@ -14,7 +15,10 @@ const difficultyColor: Record<string, string> = {
 
 function PlantCard({ plant }: { plant: Plant }) {
   return (
-    <div className="border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow">
+    <Link
+      href={`/plants/${plant.slug}`}
+      className="group border border-gray-200 rounded-xl p-5 hover:border-green-400 hover:shadow-md transition-all block"
+    >
       <div className="flex items-start justify-between gap-2 mb-2">
         <span className="text-3xl">{plant.emoji}</span>
         <span
@@ -27,19 +31,24 @@ function PlantCard({ plant }: { plant: Plant }) {
           {plant.category === "indoor" ? "Indoor" : "Outdoor"}
         </span>
       </div>
-      <h3 className="font-semibold text-gray-800 text-base">{plant.name}</h3>
-      <p className="text-sm text-gray-500 mt-1 mb-3">{plant.description}</p>
+      <h3 className="font-semibold text-gray-800 text-base group-hover:text-green-600 transition-colors">
+        {plant.name}
+      </h3>
+      <p className="text-sm text-gray-500 mt-1 mb-3 line-clamp-2">{plant.description}</p>
       <div className="space-y-1 text-sm text-gray-500">
         <p>💡 {plant.light}</p>
         <p>💧 {plant.water}</p>
         <p>
-          📊 Difficulty:{" "}
+          📊{" "}
           <span className={`font-medium ${difficultyColor[plant.difficulty]}`}>
             {plant.difficulty}
           </span>
         </p>
       </div>
-    </div>
+      <p className="text-xs text-green-600 mt-3 font-medium group-hover:underline">
+        View care guide →
+      </p>
+    </Link>
   );
 }
 
@@ -126,7 +135,7 @@ export default function PlantsPage() {
       {filtered.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filtered.map((plant) => (
-            <PlantCard key={plant.name} plant={plant} />
+            <PlantCard key={plant.slug} plant={plant} />
           ))}
         </div>
       ) : (
